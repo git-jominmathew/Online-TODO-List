@@ -1,6 +1,6 @@
 package com.ey.todo.web;
 
-import com.ey.todo.domain.TodoItem;
+import com.ey.todo.model.TodoItem;
 import com.ey.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,9 +33,9 @@ public class TodoController {
     }
 
     @PostMapping(value = "/api/todoItems")
-    public ResponseEntity<?> createNewTodoItems(){
-        TodoItem item = todoService.createNewTodoItems();
-        return ResponseEntity.ok(item);
+    public ResponseEntity<?> createNewTodoItems(@RequestBody TodoItem todoItem){
+        todoService.createNewTodoItems(todoItem);
+        return ResponseEntity.ok(todoItem);
     }
     @DeleteMapping(value="/api/deleteTodoItems/{id}")
     public ResponseEntity<?> deleteTodoItem(@PathVariable Integer id){
