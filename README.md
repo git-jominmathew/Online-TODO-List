@@ -8,11 +8,9 @@ A simple online TODO list either supporting back-end or web interface that  can 
 
 *input json sample
 {
-"id": 1,
-"task": "first task",
+"task": "Workout Daily",
 "done": false
 }
-
 
 Execution steps:
 
