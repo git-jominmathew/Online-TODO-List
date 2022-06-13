@@ -12,3 +12,16 @@ A simple online TODO list either supporting back-end or web interface that  can 
 "task": "first task",
 "done": false
 }
+
+
+Execution steps:
+
+Navigate to project folder
+Execute mvn clean install
+Execute java -jar D:\projs\Online-TODO-List\project\todo\target\todo-0.0.1-SNAPSHOT.jar
+Application should be up and running
+
+import To-Do Echo.postman_collection to the postman
+
+trigger get/save/update/delete functionalities
+
