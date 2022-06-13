@@ -3,3 +3,9 @@ A simple online TODO list either supporting back-end or web interface that  can 
 
 *local port : 9031
 *H2 database console url:http://localhost:9031/h2
+*input json sample
+{
+"id": 1,
+"task": "first task",
+"done": false
+}
