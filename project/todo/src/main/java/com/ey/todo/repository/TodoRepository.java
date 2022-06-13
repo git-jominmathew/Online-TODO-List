@@ -1,9 +1,9 @@
 package com.ey.todo.repository;
 
-import com.ey.todo.model.TodoItem;
+import com.ey.todo.model.ToDoEntiy;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
-public interface TodoRepository extends CrudRepository<TodoItem,Integer> {
+@Repository
+public interface TodoRepository extends CrudRepository<ToDoEntiy,Integer> {
 }

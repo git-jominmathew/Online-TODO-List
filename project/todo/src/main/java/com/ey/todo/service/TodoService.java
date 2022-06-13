@@ -1,66 +1,121 @@
 package com.ey.todo.service;
-/**
- * @author : jomin mathew
- * TodoService
- */
 
-import com.ey.todo.model.TodoItem;
+
+import com.ey.todo.constants.ToDoConstants;
+import com.ey.todo.dto.TodoItem;
+import com.ey.todo.model.ToDoEntiy;
 import com.ey.todo.repository.TodoRepository;
+import com.ey.todo.utility.ToDoMapper;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * to-do-service
+ */
 @Service
 public class TodoService {
 
+    Logger log = LoggerFactory.getLogger(TodoService.class);
+     static final String PATTERN = "dd-MMM-yyyy HH:MM:SS";
     @Autowired
     private TodoRepository todoRepository;
 
 
-    /**
-     * method to get all the items
-     * @return
-     */
-    public List<TodoItem> fetchAllTodoItems(){
-        return (List<TodoItem>) todoRepository.findAll();
+    public List<TodoItem> fetchAllTodoItems() {
+        log.info("entering fetchAllTodoItems");
+        List<ToDoEntiy> entiyList = (List<ToDoEntiy>) todoRepository.findAll();
+        return ToDoMapper.mapToDTO(entiyList);
     }
 
-    /**
-     * method to update To-do Items
-     * @param id
-     * @param todoItem
-     * @return
-     */
+
     public TodoItem updateTodoItems(Integer id, TodoItem todoItem) {
-        TodoItem savedToDo = null;
-        Optional<TodoItem>  toDoOp = todoRepository.findById(id);
-        if(toDoOp.isPresent()){
+        log.info("entering updateTodoItems");
+        ToDoEntiy savedToDo = null;
+        Optional<ToDoEntiy> toDoOp = todoRepository.findById(id);
+        if (toDoOp.isPresent()) {
             savedToDo = toDoOp.get();
-            savedToDo.setDone(todoItem.getDone());
-            savedToDo.setTask(todoItem.getTask());
+            if (todoItem.getDone() != null) {//update the whether Done, only if the task is not null
+                savedToDo.setDone(todoItem.getDone());
+            }
+            if (todoItem.getTask() != null) {//update the task only if the task is not null
+                savedToDo.setTask(todoItem.getTask());
+            }
+            savedToDo.setLastUpdateTime(createNewTime());//create new time while updating the entry
             todoRepository.save(savedToDo);
+            //map the updated entries back to DTO
+            ModelMapper modelMapper = new ModelMapper();
+            todoItem = modelMapper.map(savedToDo, TodoItem.class);
+        }else {
+            todoItem = null;
         }
-        return savedToDo;
+        return todoItem;
     }
 
+
     /**
-     * method to create New Todo Items
-     * @param todoItem
+     * create new to-do items
+     * save : if new task
+     * update : if existing task
+     *
+     * @param todoItem todoItem
+     * @return {@link String}
+     * @see String
+     */
+    public String createNewTodoItems(TodoItem todoItem) {
+        log.info("entering create new to-do items");
+        ModelMapper modelMapper = new ModelMapper();
+
+        //check whether the task already exists
+        List<ToDoEntiy> entiyList = (List<ToDoEntiy>) todoRepository.findAll();
+        Optional<ToDoEntiy> entityToUpdate = entiyList.stream().filter(e -> e.getTask().equals(todoItem.getTask())).findFirst();
+        if (entityToUpdate.isPresent()) {//update
+            updateTodoItems(entityToUpdate.get().getId(), todoItem);
+        } else {//save
+            ToDoEntiy toDoEntiy = modelMapper.map(todoItem, ToDoEntiy.class);
+            toDoEntiy.setLastUpdateTime(createNewTime());
+            try {
+                todoRepository.save(toDoEntiy);
+            } catch (RuntimeException re) {
+                log.error(re.getMessage());
+                return ToDoConstants.FAILURE.toString();
+            }
+        }
+        return ToDoConstants.SUCCESS.toString();
+    }
+
+
+    /**
+     *
+     * @param id
      * @return
      */
-    public int createNewTodoItems(TodoItem todoItem) {
-        todoRepository.save(todoItem);
-        return todoItem.getId() ;
+    public String deleteTodoItem(Integer id) {
+        log.info("Repo entering deleteTodoItem");
+        try {
+            todoRepository.deleteById(id);
+        } catch (RuntimeException re) {
+            log.error(re.getMessage());
+            return ToDoConstants.FAILURE.toString();
+        }
+        return ToDoConstants.DELETED.toString();
     }
 
     /**
-     * method to delete TodoItem
-     * @param id
+     * createNewTime
+     *
+     * @return
      */
-    public void deleteTodoItem(Integer id) {
-        todoRepository.deleteById(id);
+    public String createNewTime() {
+        SimpleDateFormat sf = new SimpleDateFormat(PATTERN);
+        return sf.format(new Date());
     }
 }

@@ -1,10 +1,9 @@
 package com.ey.todo.web;
-/**
- * @author : jomin mathew
- * TodoController
- */
-import com.ey.todo.model.TodoItem;
+
+import com.ey.todo.dto.TodoItem;
 import com.ey.todo.service.TodoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,55 +11,66 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * to-do controller
+ */
 @RestController
 public class TodoController {
 
+    Logger log = LoggerFactory.getLogger(TodoController.class);
     @Autowired
     private TodoService todoService;
 
     /**
-     * method to get all the items
+     * fetch All To-do Items
+     *
      * @return
      */
     @GetMapping("/get")
-    public ResponseEntity<?> fetchAllTodoItems(){
-        List<TodoItem> todoItems = todoService.fetchAllTodoItems();
-        return ResponseEntity.status(HttpStatus.OK).body(todoItems);
+    public List<TodoItem> fetchAllTodoItems() {
+        log.info("TodoController:fetchAllTodoItems");
+        return todoService.fetchAllTodoItems();
     }
 
     /**
-     * method to update items
+     * update To-do Items
+     *
      * @param id
      * @param todoItem
      * @return
      */
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateTodoItems(@PathVariable Integer id , @RequestBody TodoItem todoItem){
-        //call service . get data back from server .
-        TodoItem item = todoService.updateTodoItems(id,todoItem);
-        //send it back to front end
-        return ResponseEntity.status(HttpStatus.OK).body(item);
+    public ResponseEntity<?> updateTodoItems(@PathVariable Integer id, @RequestBody TodoItem todoItem) {
+        log.info("TodoController:updateTodoItems");
+        todoItem =  todoService.updateTodoItems(id, todoItem);
+        if(todoItem!=null){
+            return ResponseEntity.ok(todoItem);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     /**
-     * method to save items
+     * create New To-do Items
+     *
      * @param todoItem
      * @return
      */
     @PostMapping(value = "/save")
-    public ResponseEntity<?> createNewTodoItems(@RequestBody TodoItem todoItem){
-        todoService.createNewTodoItems(todoItem);
-        return ResponseEntity.ok(todoItem);
+    public String createNewTodoItems(@RequestBody TodoItem todoItem) {
+        log.info("TodoController:createNewTodoItems");
+        return todoService.createNewTodoItems(todoItem);
     }
 
     /**
-     * method to save items
+     * delete To-do Items
+     *
      * @param id
      * @return
      */
-    @DeleteMapping(value="/delete/{id}")
-    public ResponseEntity<?> deleteTodoItem(@PathVariable Integer id){
-    todoService.deleteTodoItem(id);
-    return  ResponseEntity.ok("ok");
+    @DeleteMapping(value = "/delete/{id}")
+    public String deleteTodoItem(@PathVariable Integer id) {
+        log.info("TodoController:deleteTodoItem");
+        return  todoService.deleteTodoItem(id);
     }
 }
