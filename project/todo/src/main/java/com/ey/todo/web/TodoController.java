@@ -1,5 +1,8 @@
 package com.ey.todo.web;
-
+/**
+ * @author : jomin mathew
+ * TodoController
+ */
 import com.ey.todo.model.TodoItem;
 import com.ey.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,21 +13,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//regular controller vs controller
-//controller returns a view only
 public class TodoController {
 
     @Autowired
     private TodoService todoService;
 
-    //fetch all to_do items from database
-    @GetMapping("/api/todoItems")
+    /**
+     * method to get all the items
+     * @return
+     */
+    @GetMapping("/get")
     public ResponseEntity<?> fetchAllTodoItems(){
         List<TodoItem> todoItems = todoService.fetchAllTodoItems();
         return ResponseEntity.status(HttpStatus.OK).body(todoItems);
     }
 
-    @PutMapping("/api/todoItems/{id}")
+    /**
+     * method to update items
+     * @param id
+     * @param todoItem
+     * @return
+     */
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateTodoItems(@PathVariable Integer id , @RequestBody TodoItem todoItem){
         //call service . get data back from server .
         TodoItem item = todoService.updateTodoItems(id,todoItem);
@@ -32,12 +42,23 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.OK).body(item);
     }
 
-    @PostMapping(value = "/api/todoItems")
+    /**
+     * method to save items
+     * @param todoItem
+     * @return
+     */
+    @PostMapping(value = "/save")
     public ResponseEntity<?> createNewTodoItems(@RequestBody TodoItem todoItem){
         todoService.createNewTodoItems(todoItem);
         return ResponseEntity.ok(todoItem);
     }
-    @DeleteMapping(value="/api/deleteTodoItems/{id}")
+
+    /**
+     * method to save items
+     * @param id
+     * @return
+     */
+    @DeleteMapping(value="/delete/{id}")
     public ResponseEntity<?> deleteTodoItem(@PathVariable Integer id){
     todoService.deleteTodoItem(id);
     return  ResponseEntity.ok("ok");

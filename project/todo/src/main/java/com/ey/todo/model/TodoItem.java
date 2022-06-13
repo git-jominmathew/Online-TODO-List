@@ -26,8 +26,6 @@ public class TodoItem {
     @Column
     private Boolean isDone;
 
-
-
     public String getTask() {
         return task;
     }
