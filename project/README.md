@@ -9,7 +9,7 @@
 
 
 
-##Resources and samples
+## Resources and samples
 
 1.**local port :** 9031
 
@@ -26,7 +26,7 @@
     }`
 
 
-###Execution steps:
+### Execution steps:
 
 1.Navigate to project folder
 
