@@ -11,9 +11,9 @@
 
 ## Resources and samples
 
-1.**local port :** 9031
+1.local port : 9031
 
-2.**H2 database console url:** [h2-console url](http://localhost:9031/api/todoItems/h2-console)
+2.H2 database console url: [h2-console url](http://localhost:9031/api/todoItems/h2-console)
 
 3.postman collection name     : To-Do Echo.postman_collection
 
