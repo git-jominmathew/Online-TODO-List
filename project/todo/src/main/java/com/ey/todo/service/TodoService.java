@@ -36,7 +36,7 @@ public class TodoService {
 
     public List<TodoItem> fetchAllTodoItems(Integer userid) {
         log.info("entering fetchAllTodoItems");
-        List<ToDoEntiy> entiyList = (List<ToDoEntiy>) todoRepository.findAllByUserId(userid);
+        List<ToDoEntiy> entiyList = todoRepository.findAllByUserId(userid);
         return ToDoMapper.mapToDTO(entiyList);
     }
 
@@ -83,7 +83,7 @@ public class TodoService {
         ModelMapper modelMapper = new ModelMapper();
         User user = userService.getUser(userId);
         //check whether the task already exists
-        List<ToDoEntiy> entiyList = (List<ToDoEntiy>) todoRepository.findAllByUserId(userId);
+        List<ToDoEntiy> entiyList =  todoRepository.findAllByUserId(userId);
         Optional<ToDoEntiy> entityToUpdate = entiyList.stream().filter(e -> e.getTask().equals(todoItem.getTask())).findFirst();
         if (entityToUpdate.isPresent()) {//update
             updateTodoItems(entityToUpdate.get().getId(), todoItem,userId);

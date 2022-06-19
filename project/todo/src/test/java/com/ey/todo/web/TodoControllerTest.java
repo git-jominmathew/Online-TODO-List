@@ -31,14 +31,14 @@ class TodoControllerTest {
     @Mock
     TodoRepository todoRepository;
 
-    /*@Test
+    @Test
     void fetchAllTodoItems() {
         List<TodoItem> list = new ArrayList<>();
         TodoItem todoItem = new TodoItem();
         todoItem.setTask("task1");
         list.add(todoItem);
-        when(service.fetchAllTodoItems()).thenReturn(list);
-        List<TodoItem> ret = todoController.fetchAllTodoItems();
+        when(service.fetchAllTodoItems(any())).thenReturn(list);
+        List<TodoItem> ret = todoController.fetchAllTodoItems(1);
         Assertions.assertThat(ret).isEqualTo(list);
     }
 
@@ -46,8 +46,8 @@ class TodoControllerTest {
     void updateTodoItems() {
         TodoItem todoItem = new TodoItem();
         todoItem.setTask("");
-        when(service.updateTodoItems(any(),any(TodoItem.class))).thenReturn(todoItem);
-        ResponseEntity<?> responseEntity  = todoController.updateTodoItems(1,todoItem);
+        when(service.updateTodoItems(any(),any(TodoItem.class),any())).thenReturn(todoItem);
+        ResponseEntity<?> responseEntity  = todoController.updateTodoItems(1,todoItem,1);
         Assertions.assertThat(responseEntity.getBody()).isEqualTo(todoItem);
     }
 
@@ -55,12 +55,12 @@ class TodoControllerTest {
     void createNewTodoItems() {
         TodoItem todoItem = new TodoItem();
         todoItem.setTask("");
-        when(service.createNewTodoItems(any(TodoItem.class))).thenReturn(ToDoConstants.SUCCESS.toString());
-        String status =todoController.createNewTodoItems(todoItem);
+        when(service.createNewTodoItems(any(TodoItem.class),any())).thenReturn(ToDoConstants.SUCCESS.toString());
+        String status =todoController.createNewTodoItems(1,todoItem);
         Assertions.assertThat(status).isEqualTo(ToDoConstants.SUCCESS.toString());
 
-        when(service.createNewTodoItems(any(TodoItem.class))).thenReturn(ToDoConstants.FAILURE.toString());
-        status =todoController.createNewTodoItems(todoItem);
+        when(service.createNewTodoItems(any(TodoItem.class),any())).thenReturn(ToDoConstants.FAILURE.toString());
+        status =todoController.createNewTodoItems(1,todoItem);
         Assertions.assertThat(status).isEqualTo(ToDoConstants.FAILURE.toString());
     }
 
@@ -69,5 +69,5 @@ class TodoControllerTest {
         when(service.deleteTodoItem(any())).thenReturn(ToDoConstants.DELETED.toString());
         String ret = todoController.deleteTodoItem(1);
         Assertions.assertThat(ret).isEqualTo(ToDoConstants.DELETED.toString());
-    }*/
+    }
 }
