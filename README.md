@@ -19,15 +19,7 @@
 
 4.postman collection location : projs\Online-TODO-List
 
-5.input json sample for user details
-
-`{
-"name": "mathew",
-"password": 12345
-}`
-
-
-6.input json sample for to-do list
+5.input json sample
     `{
     "task": "Workout Daily",
     "done": false
@@ -46,9 +38,4 @@
 
 5.import To-Do Echo.postman_collection to the postman
 
-6.save user.Once saved , will be getting user id in the response
-
-7.For next operations,  provide the corresponding userid in "todo-user" header
-
-8.trigger get/save/update/delete functionalities
-
+6.trigger get/save/update/delete functionalities
