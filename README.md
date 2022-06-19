@@ -21,17 +21,18 @@
 
 5.input json sample for user details
 
-`{
-"name": "mathew",
-"password": 12345
-}`
+        `{
+        "name": "mathew",
+        "password": 12345
+        }`
 
 
 6.input json sample for to-do list
-    `{
-    "task": "Workout Daily",
-    "done": false
-    }`
+
+        `{
+        "task": "Workout Daily",
+        "done": false
+        }`
 
 
 ### Execution steps:
@@ -46,9 +47,12 @@
 
 5.import To-Do Echo.postman_collection to the postman
 
-6.save user.Once saved , will be getting user id in the response
+6.save user.
+As response we will be getting the user id
 
-7.For next operations,  provide the corresponding userid in "todo-user" header
+7.For next operations (ie save,get,update todo items),  
+ provide the userid in postman header with 
+ key name : "todo-user" and value : <user id obtained earlier>
 
 8.trigger get/save/update/delete functionalities
 
