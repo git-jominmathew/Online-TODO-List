@@ -27,9 +27,9 @@ public class TodoController {
      * @return
      */
     @GetMapping("/get")
-    public List<TodoItem> fetchAllTodoItems() {
+    public List<TodoItem> fetchAllTodoItems(@RequestHeader(value = "todo-user") Integer userId) {
         log.info("TodoController:fetchAllTodoItems");
-        return todoService.fetchAllTodoItems();
+        return todoService.fetchAllTodoItems(userId);
     }
 
     /**
@@ -40,9 +40,9 @@ public class TodoController {
      * @return
      */
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateTodoItems(@PathVariable Integer id, @RequestBody TodoItem todoItem) {
+    public ResponseEntity<?> updateTodoItems(@PathVariable Integer id, @RequestBody TodoItem todoItem,@RequestHeader("todo-user")Integer userId) {
         log.info("TodoController:updateTodoItems");
-        todoItem =  todoService.updateTodoItems(id, todoItem);
+        todoItem =  todoService.updateTodoItems(id, todoItem,userId);
         if(todoItem!=null){
             return ResponseEntity.ok(todoItem);
         }else{
@@ -57,9 +57,9 @@ public class TodoController {
      * @return
      */
     @PostMapping(value = "/save")
-    public String createNewTodoItems(@RequestBody TodoItem todoItem) {
+    public String createNewTodoItems(@RequestHeader("todo-user")Integer userId,@RequestBody TodoItem todoItem) {
         log.info("TodoController:createNewTodoItems");
-        return todoService.createNewTodoItems(todoItem);
+        return todoService.createNewTodoItems(todoItem,userId);
     }
 
     /**

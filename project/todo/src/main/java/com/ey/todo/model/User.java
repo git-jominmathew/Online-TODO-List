@@ -1,29 +1,33 @@
 package com.ey.todo.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-@Getter
-@Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "TODO_TBL")
-public class ToDoEntiy {
+@Table(name = "USER_TBL")
+@Getter
+@Setter
+public class User {
     @Column
+    private String userName;
+
+    @Column
+    private String password;
+
     @Id
     @GeneratedValue
-    private int id;
     @Column
-    private String task;
-    @Column
-    private Boolean done;
-    @Column
-    private String lastUpdateTime;
-    @ManyToOne
-    private User user;
+    private int id ;
+
+    public User(String name,String pwd){
+        this.userName = name;
+        this.password = pwd;
+    }
+
 }

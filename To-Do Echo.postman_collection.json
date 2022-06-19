@@ -28,7 +28,64 @@
 			"response": []
 		},
 		{
+			"name": "get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9031/api/todoItems/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9031",
+					"path": [
+						"api",
+						"todoItems",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "save",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "todo-user",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"task\": \"jomin task\",\r\n\"done\": false\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9031/api/todoItems/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9031",
+					"path": [
+						"api",
+						"todoItems",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save User",
 			"request": {
 				"method": "POST",
 				"header": [],

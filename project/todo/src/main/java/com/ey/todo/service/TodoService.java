@@ -4,6 +4,7 @@ package com.ey.todo.service;
 import com.ey.todo.constants.ToDoConstants;
 import com.ey.todo.dto.TodoItem;
 import com.ey.todo.model.ToDoEntiy;
+import com.ey.todo.model.User;
 import com.ey.todo.repository.TodoRepository;
 import com.ey.todo.utility.ToDoMapper;
 import org.modelmapper.ModelMapper;
@@ -29,20 +30,27 @@ public class TodoService {
     @Autowired
     private TodoRepository todoRepository;
 
+    @Autowired
+    private UserService userService;
 
-    public List<TodoItem> fetchAllTodoItems() {
+
+    public List<TodoItem> fetchAllTodoItems(Integer userid) {
         log.info("entering fetchAllTodoItems");
-        List<ToDoEntiy> entiyList = (List<ToDoEntiy>) todoRepository.findAll();
+        List<ToDoEntiy> entiyList = (List<ToDoEntiy>) todoRepository.findAllByUserId(userid);
         return ToDoMapper.mapToDTO(entiyList);
     }
 
 
-    public TodoItem updateTodoItems(Integer id, TodoItem todoItem) {
+    public TodoItem updateTodoItems(Integer id, TodoItem todoItem,Integer userId) {
         log.info("entering updateTodoItems");
+        User user = userService.getUser(userId);
         ToDoEntiy savedToDo = null;
         Optional<ToDoEntiy> toDoOp = todoRepository.findById(id);
         if (toDoOp.isPresent()) {
             savedToDo = toDoOp.get();
+            if(!user.equals(savedToDo.getUser())){
+                throw new RuntimeException("Given User Not Authorized to Edit");
+            }
             if (todoItem.getDone() != null) {//update the whether Done, only if the task is not null
                 savedToDo.setDone(todoItem.getDone());
             }
@@ -70,18 +78,19 @@ public class TodoService {
      * @return {@link String}
      * @see String
      */
-    public String createNewTodoItems(TodoItem todoItem) {
+    public String createNewTodoItems(TodoItem todoItem,Integer userId) {
         log.info("entering create new to-do items");
         ModelMapper modelMapper = new ModelMapper();
-
+        User user = userService.getUser(userId);
         //check whether the task already exists
-        List<ToDoEntiy> entiyList = (List<ToDoEntiy>) todoRepository.findAll();
+        List<ToDoEntiy> entiyList = (List<ToDoEntiy>) todoRepository.findAllByUserId(userId);
         Optional<ToDoEntiy> entityToUpdate = entiyList.stream().filter(e -> e.getTask().equals(todoItem.getTask())).findFirst();
         if (entityToUpdate.isPresent()) {//update
-            updateTodoItems(entityToUpdate.get().getId(), todoItem);
+            updateTodoItems(entityToUpdate.get().getId(), todoItem,userId);
         } else {//save
             ToDoEntiy toDoEntiy = modelMapper.map(todoItem, ToDoEntiy.class);
             toDoEntiy.setLastUpdateTime(createNewTime());
+            toDoEntiy.setUser(user);
             try {
                 todoRepository.save(toDoEntiy);
             } catch (RuntimeException re) {

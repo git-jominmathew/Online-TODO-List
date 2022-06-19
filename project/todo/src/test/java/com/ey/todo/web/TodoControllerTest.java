@@ -31,7 +31,7 @@ class TodoControllerTest {
     @Mock
     TodoRepository todoRepository;
 
-    @Test
+    /*@Test
     void fetchAllTodoItems() {
         List<TodoItem> list = new ArrayList<>();
         TodoItem todoItem = new TodoItem();
@@ -69,5 +69,5 @@ class TodoControllerTest {
         when(service.deleteTodoItem(any())).thenReturn(ToDoConstants.DELETED.toString());
         String ret = todoController.deleteTodoItem(1);
         Assertions.assertThat(ret).isEqualTo(ToDoConstants.DELETED.toString());
-    }
+    }*/
 }

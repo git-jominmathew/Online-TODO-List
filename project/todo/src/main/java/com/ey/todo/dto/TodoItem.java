@@ -1,49 +1,21 @@
 package com.ey.todo.dto;
 
 import com.ey.todo.model.ToDoEntiy;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TodoItem {
     private int id;
     private String task;
     private Boolean done;
     private String lastUpdateTime;
-    public TodoItem(){
-
-    }
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTask() {
-        return task;
-    }
-
-    public void setTask(String task) {
-        this.task = task;
-    }
-
-    public Boolean getDone() {
-        return done;
-    }
-
-    public void setDone(Boolean done) {
-        this.done = done;
-    }
-
-    public String getLastUpdateTime() {
-        return lastUpdateTime;
-    }
-
-    public void setLastUpdateTime(String lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-    }
-
-    public TodoItem(ToDoEntiy entity){
+     public TodoItem(ToDoEntiy entity){
         this.id = entity.getId();
         this.task = entity.getTask();
         this.done =entity.getDone();
