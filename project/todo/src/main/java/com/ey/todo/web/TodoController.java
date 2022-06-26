@@ -22,8 +22,8 @@ public class TodoController {
     private TodoService todoService;
 
     /**
-     * fetch All To-do Items
      *
+     * @param userId
      * @return
      */
     @GetMapping("/get")
@@ -33,12 +33,13 @@ public class TodoController {
     }
 
     /**
-     * update To-do Items
      *
      * @param id
      * @param todoItem
+     * @param userId
      * @return
      */
+
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateTodoItems(@PathVariable Integer id, @RequestBody TodoItem todoItem,@RequestHeader("todo-user")Integer userId) {
         log.info("TodoController:updateTodoItems");
@@ -51,8 +52,8 @@ public class TodoController {
     }
 
     /**
-     * create New To-do Items
      *
+     * @param userId
      * @param todoItem
      * @return
      */
@@ -63,7 +64,6 @@ public class TodoController {
     }
 
     /**
-     * delete To-do Items
      *
      * @param id
      * @return
